@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insuranceportal-eta-deploy
+  labels:
+    app: insuranceportal-eta-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: insuranceportal-eta-app
+  template:
+    metadata:
+      labels:
+        app: insuranceportal-eta-app
+    spec:
+      containers:
+      - name: insuranceportal-eta-container
+        image: sutrayerahul/insuranceportal-eta-app
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: insuranceportal-eta-np-service
+  labels:
+    app: insuranceportal-eta-app
+spec:
+  selector:
+    app: insuranceportal-eta-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31060
+    port: 8081
+    targetPort: 8081
